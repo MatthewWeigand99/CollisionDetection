@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
     int eWidth = 50;
     int eHeight = 100;
+    int eOffset = 500;
 
     int camX;
     int offset;
@@ -46,9 +47,11 @@ public class GamePanel extends JPanel implements ActionListener{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (enemies.size() < 1)
-                    enemies.add(new Enemy(500, 400, eWidth, eHeight));
-
+                if (enemies.size() < 5) {
+                    eOffset += 500;
+                    enemies.add(new Enemy(eOffset, 400, eWidth, eHeight));
+                }
+                
                 if (walls.get(walls.size() - 1).x < 800) {
                     offset += 700;
                     makeWalls(offset);
@@ -66,6 +69,11 @@ public class GamePanel extends JPanel implements ActionListener{
                 for (int i = 0; i < walls.size(); i++) {
                     if (walls.get(i).x < -800)
                         walls.remove(i);
+                }
+
+                for (int i = 0; i < enemies.size(); i++) {
+                    if (enemies.get(i).x < -800)
+                        enemies.remove(i);
                 }
 
                 repaint();

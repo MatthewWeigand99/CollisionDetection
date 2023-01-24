@@ -61,7 +61,7 @@ public class Player {
         //Gravity
         yspeed += 0.5;
 
-        //Horizontal collisions
+        //Horizontal Wall collisions
         hitBox.x += xspeed;
         for(Wall w : panel.walls) {
             if (hitBox.intersects(w.hitBox)) {
@@ -76,7 +76,14 @@ public class Player {
             }
         }
 
-        //Vertical collisions
+        //Horizontal Enemy collisions
+        for (Enemy e : panel.enemies) {
+            if (hitBox.intersects(e.hitBox)) {
+                panel.reset();
+            }
+        }
+
+        //Vertical Wall collisions
         hitBox.y += yspeed;
         for(Wall w : panel.walls) {
             if (hitBox.intersects(w.hitBox)) {
