@@ -77,7 +77,7 @@ public class Player {
         }
 
         //Horizontal Enemy collisions
-        for (Enemy e : panel.enemies) {
+        for(Enemy e : panel.enemies) {
             if (hitBox.intersects(e.hitBox)) {
                 panel.reset();
             }

@@ -49,9 +49,9 @@ public class GamePanel extends JPanel implements ActionListener{
             public void run() {
                 if (enemies.size() < 5) {
                     eOffset += 500;
-                    enemies.add(new Enemy(eOffset, 400, eWidth, eHeight));
+                    enemies.add(new Enemy(eOffset, walls.get(getIndex(eOffset, walls)).y - 100, eWidth, eHeight));
                 }
-                
+
                 if (walls.get(walls.size() - 1).x < 800) {
                     offset += 700;
                     makeWalls(offset);
@@ -80,6 +80,16 @@ public class GamePanel extends JPanel implements ActionListener{
         }}, 0, 17);
     }
 
+    public int getIndex(int enemyX, ArrayList<Wall> walls) {
+        int index = 0;
+        
+        for (Wall w : walls) {
+            if (enemyX == w.x)
+                index = walls.indexOf(w);
+        }
+
+        return index;
+    }
     public void reset() {
         player.x = 200;
         player.y = 150;
