@@ -2,8 +2,11 @@ package CollisionDetection;
 
 import javax.swing.JPanel;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -18,20 +21,34 @@ public class GamePanel extends JPanel implements ActionListener{
 
     Player player;
     ArrayList<Wall> walls = new ArrayList<>();
+    ArrayList<Enemy> enemies = new ArrayList<>();
+
+    int eWidth = 50;
+    int eHeight = 100;
 
     int camX;
     int offset;
 
     Timer timer;
 
+    Rectangle restart;
+    Rectangle home;
+    Font buttonFont = new Font("Arial", Font.BOLD, 30);
+
     public GamePanel() {
         player = new Player(400, 300, this);
         makeWalls(50);
         timer = new Timer();
 
+        restart = new Rectangle(550, 25, 50, 50);
+        home = new Rectangle(625, 25, 50, 50);
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                if (enemies.size() < 1)
+                    enemies.add(new Enemy(500, 400, eWidth, eHeight));
+
                 if (walls.get(walls.size() - 1).x < 800) {
                     offset += 700;
                     makeWalls(offset);
@@ -41,6 +58,9 @@ public class GamePanel extends JPanel implements ActionListener{
                 player.set();
                 for (Wall w : walls) {
                     w.set(camX);
+                }
+                for (Enemy e : enemies) {
+                    e.set(camX);
                 }
 
                 for (int i = 0; i < walls.size(); i++) {
@@ -60,6 +80,7 @@ public class GamePanel extends JPanel implements ActionListener{
         player.yspeed = 0;
 
         walls.clear();
+        enemies.clear();
         
         offset = -150;
         makeWalls(offset);
@@ -114,28 +135,42 @@ public class GamePanel extends JPanel implements ActionListener{
         for (Wall w : walls) {
             w.draw(gtd);
         }
+        for(Enemy e : enemies) {
+            e.draw(gtd);
+        }
+
+        gtd.setColor(Color.BLACK);
+        gtd.drawRect(550, 25, 50, 50);
+        gtd.drawRect(625, 25, 50, 50);
+        gtd.setColor(Color.WHITE);
+        gtd.fillRect(551, 26, 48, 48);
+        gtd.fillRect(626, 26, 48, 48);
+        gtd.setColor(Color.BLACK);
+        gtd.setFont(buttonFont);
+        gtd.drawString("R", 564, 60);
+        gtd.drawString("H", 639, 60);
     }
 
     void keyPressed(KeyEvent e) {
         if (e.getKeyChar() == 'a')
             player.keyLeft = true;
-        if (e.getKeyChar() == 'w')
+        if (e.getKeyChar() == ' ')
             player.keyUp = true;
         if (e.getKeyChar() == 'd')
             player.keyRight = true;
-        if (e.getKeyChar() == 's')
-            player.keyDown = true;
+        if (e.getKeyChar() == 'r')
+            reset();
+
     }
 
     void keyReleased(KeyEvent e) {
         if (e.getKeyChar() == 'a')
         player.keyLeft = false;
-        if (e.getKeyChar() == 'w')
+        if (e.getKeyChar() == ' ')
         player.keyUp = false;
         if (e.getKeyChar() == 'd')
         player.keyRight = false;
-        if (e.getKeyChar() == 's')
-        player.keyDown = false;
+
     }
 
     @Override

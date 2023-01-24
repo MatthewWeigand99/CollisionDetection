@@ -16,7 +16,6 @@ public class Player {
     Rectangle hitBox;
     boolean keyLeft;
     boolean keyRight;
-    boolean keyDown;
     boolean keyUp;
 
     //Player constructor
