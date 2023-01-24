@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener{
     ArrayList<Wall> walls = new ArrayList<>();
 
     int camX;
+    int offset;
 
     Timer timer;
 
@@ -30,10 +32,22 @@ public class GamePanel extends JPanel implements ActionListener{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                if (walls.get(walls.size() - 1).x < 800) {
+                    offset += 700;
+                    makeWalls(offset);
+                    System.out.println(walls.size());
+                }
+
                 player.set();
                 for (Wall w : walls) {
                     w.set(camX);
                 }
+
+                for (int i = 0; i < walls.size(); i++) {
+                    if (walls.get(i).x < -800)
+                        walls.remove(i);
+                }
+
                 repaint();
         }}, 0, 17);
     }
@@ -47,11 +61,39 @@ public class GamePanel extends JPanel implements ActionListener{
 
         walls.clear();
         
-        int offset = 50;
+        offset = -150;
         makeWalls(offset);
     }
 
     public void makeWalls(int offset) {
+        int size = 50;
+        Random rand = new Random();
+        int index = rand.nextInt(3);
+
+        if (index == 0) {
+            for (int i = 0; i < 14; i++) {
+                walls.add(new Wall(offset + i * 50, 600, size, size));
+            }
+        }
+        else if (index == 1) {
+            for (int i = 0; i < 14; i++) {
+                if (i < 6 || i > 10)
+                    walls.add(new Wall(offset + i * 50, 600, size, size));
+                else
+                    walls.add(new Wall(offset + i * 50, 500, size, size));
+            }
+        }
+        else if (index == 2) {
+            for (int i = 0; i < 14; i++) {
+                walls.add(new Wall(offset + i * 50, 600, size, size));
+                if (i > 4 && i < 11)
+                    walls.add(new Wall(offset + i * 50, 550, size, size));
+                if (i > 5 && i < 10)
+                    walls.add(new Wall(offset + i * 50, 500, size, size));
+            }
+
+        }
+        /*
         for (int i = 50; i < 650; i += 50) {
             walls.add(new Wall(i, 600, 50, 50));
         }
@@ -62,6 +104,7 @@ public class GamePanel extends JPanel implements ActionListener{
         //walls.add(new Wall(600, 500, 50, 50));
         //walls.add(new Wall(600, 450, 50, 50));
         walls.add(new Wall(450, 550, 50, 50));
+         */
     }
 
     public void paint(Graphics g) {

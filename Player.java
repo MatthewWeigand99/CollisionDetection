@@ -55,12 +55,12 @@ public class Player {
             hitBox.y++;
             for (Wall w : panel.walls) {
                 if (w.hitBox.intersects(hitBox))
-                    yspeed = -6;
+                    yspeed = -11;
             }
             hitBox.y--;
         }
         //Gravity
-        yspeed += 0.3;
+        yspeed += 0.5;
 
         //Horizontal collisions
         hitBox.x += xspeed;
