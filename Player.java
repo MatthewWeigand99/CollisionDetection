@@ -19,6 +19,7 @@ public class Player {
     boolean keyDown;
     boolean keyUp;
 
+    //Player constructor
     public Player(int x, int y, GamePanel panel) {
         this.panel = panel;
         this.x = x;
@@ -31,6 +32,7 @@ public class Player {
     }
 
     public void set() {
+        //Check keys pressed to increase/ decrease horizontal or vertical speed
         if(keyLeft && keyRight || !keyLeft && !keyRight)
             xspeed *= 0.8;
         else if (keyLeft && !keyRight)
@@ -48,6 +50,7 @@ public class Player {
         if (xspeed < -6)
             xspeed = -6;
 
+        //Jumping physics
         if (keyUp) {
             hitBox.y++;
             for (Wall w : panel.walls) {
@@ -56,8 +59,10 @@ public class Player {
             }
             hitBox.y--;
         }
+        //Gravity
         yspeed += 0.3;
 
+        //Horizontal collisions
         hitBox.x += xspeed;
         for(Wall w : panel.walls) {
             if (hitBox.intersects(w.hitBox)) {
@@ -66,11 +71,13 @@ public class Player {
                     hitBox.x += Math.signum(xspeed);
                 }
                 hitBox.x -= Math.signum(xspeed);
+                panel.camX += x - hitBox.x;
                 xspeed = 0;
-                x = hitBox.x;
+                hitBox.x = x;
             }
         }
 
+        //Vertical collisions
         hitBox.y += yspeed;
         for(Wall w : panel.walls) {
             if (hitBox.intersects(w.hitBox)) {
@@ -84,16 +91,23 @@ public class Player {
             }
         }
 
-
-        x += xspeed;
+        panel.camX -= xspeed;
         y += yspeed;
 
         hitBox.x = x;
         hitBox.y = y;
+
+        //Player death
+        if (y > 800) 
+            panel.reset();
     }
 
+    //Player draw method
     public void draw(Graphics2D gtd) {
         gtd.setColor(Color.GREEN);
         gtd.fillRect(x, y, width, height);
+
+        //Check x position of player
+        //gtd.drawString(Integer.toString(x), 100, 100);
     }
 }

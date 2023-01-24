@@ -17,22 +17,41 @@ public class GamePanel extends JPanel implements ActionListener{
 
     Player player;
     ArrayList<Wall> walls = new ArrayList<>();
+
+    int camX;
+
     Timer timer;
 
     public GamePanel() {
         player = new Player(400, 300, this);
-        makeWalls();
+        makeWalls(50);
         timer = new Timer();
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 player.set();
+                for (Wall w : walls) {
+                    w.set(camX);
+                }
                 repaint();
         }}, 0, 17);
     }
 
-    public void makeWalls() {
+    public void reset() {
+        player.x = 200;
+        player.y = 150;
+        camX = 150;
+        player.xspeed = 0;
+        player.yspeed = 0;
+
+        walls.clear();
+        
+        int offset = 50;
+        makeWalls(offset);
+    }
+
+    public void makeWalls(int offset) {
         for (int i = 50; i < 650; i += 50) {
             walls.add(new Wall(i, 600, 50, 50));
         }
@@ -40,8 +59,8 @@ public class GamePanel extends JPanel implements ActionListener{
         walls.add(new Wall(50, 500, 50, 50));
         walls.add(new Wall(50, 450, 50, 50));
         walls.add(new Wall(600, 550, 50, 50));
-        walls.add(new Wall(600, 500, 50, 50));
-        walls.add(new Wall(600, 450, 50, 50));
+        //walls.add(new Wall(600, 500, 50, 50));
+        //walls.add(new Wall(600, 450, 50, 50));
         walls.add(new Wall(450, 550, 50, 50));
     }
 

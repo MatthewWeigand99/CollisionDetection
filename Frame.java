@@ -5,6 +5,8 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 public class Frame extends JFrame{
+    
+    //Frame constructor
     public Frame() {
         GamePanel panel = new GamePanel();
         panel.setLocation(0, 0);
