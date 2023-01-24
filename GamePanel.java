@@ -68,7 +68,7 @@ public class GamePanel extends JPanel implements ActionListener{
     public void makeWalls(int offset) {
         int size = 50;
         Random rand = new Random();
-        int index = rand.nextInt(3);
+        int index = rand.nextInt(4);
 
         if (index == 0) {
             for (int i = 0; i < 14; i++) {
@@ -93,18 +93,16 @@ public class GamePanel extends JPanel implements ActionListener{
             }
 
         }
-        /*
-        for (int i = 50; i < 650; i += 50) {
-            walls.add(new Wall(i, 600, 50, 50));
+        else if (index == 3) {
+            for (int i = 0; i < 14; i++) {
+                if (i < 8 || i > 12)
+                    walls.add(new Wall(offset + i * 50, 600, size, size));
+                if (i == 9)
+                    walls.add(new Wall(offset + i * 50, 550, size, size));
+                if (i == 13)
+                    walls.add(new Wall(offset + i * 50, 500, size, size));
+            }
         }
-        walls.add(new Wall(50, 550, 50, 50));
-        walls.add(new Wall(50, 500, 50, 50));
-        walls.add(new Wall(50, 450, 50, 50));
-        walls.add(new Wall(600, 550, 50, 50));
-        //walls.add(new Wall(600, 500, 50, 50));
-        //walls.add(new Wall(600, 450, 50, 50));
-        walls.add(new Wall(450, 550, 50, 50));
-         */
     }
 
     public void paint(Graphics g) {
